@@ -56,12 +56,8 @@ class ProductsController extends Controller
                     return redirect()->action([self::class, 'update'], ['id' => $product->id]);
                 }
             } catch (\Exception $exception) {
-                var_dump($exception->getLine());
-                var_dump($exception->getFile());
-                die($exception->getMessage());
-
                 DB::rollback();
-                Log::error($e->getMessage());
+                Log::error($exception->getMessage());
             }
         }
     }
@@ -109,12 +105,8 @@ class ProductsController extends Controller
                         return redirect()->action([self::class, 'update'], ['id' => $product->id]);
                     }
                 } catch (\Exception $exception) {
-                    var_dump($exception->getLine());
-                    var_dump($exception->getFile());
-                    die($exception->getMessage());
-
                     DB::rollback();
-                    Log::error($e->getMessage());
+                    Log::error($exception->getMessage());
                 }
             }
 
