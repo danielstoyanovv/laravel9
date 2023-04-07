@@ -4,9 +4,9 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\File;
+use App\Models\Product;
 
-class Product extends Model
+class File extends Model
 {
     use HasFactory;
 
@@ -16,16 +16,17 @@ class Product extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        'name',
-        'description',
-        'price'
+        'path',
+        'size',
+        'mime',
+        'product_id'
     ];
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\MorphOne
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function getImages()
+    public function product()
     {
-        return $this->hasMany(File::class);
+        return $this->belongsTo(Product::class);
     }
 }

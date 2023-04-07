@@ -24,6 +24,11 @@
         <div class="mb-3 mt-3">
             <input type="file" name="image">
         </div>
+        @if(!empty($product->getImages))
+            @foreach($product->getImages as $image)
+                <img src="{{ url($image->path) }}" width="150px">
+            @endforeach
+        @endif
         <div class="mb-3 mt-3">
             <input type="submit" class="btn btn-primary form-control" value="{{ 'Update' }}">
         </div>

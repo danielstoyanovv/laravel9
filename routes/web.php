@@ -28,11 +28,13 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin'], function () {
         Route::get('/', function () {
             return view('admin');
         })->name('adminDashboard');
-        Route::get('/products/create', [ProductsController::class, 'create'])->name('createProduct');
-        Route::post('/products', [ProductsController::class, 'store'])->name('storeProduct');
-        Route::get('/products/update/{id}', [ProductsController::class, 'update'])->name('getUpdateProduct');
-        Route::post('/products/update/{id}', [ProductsController::class, 'update'])->name('postUpdateProduct');
-        Route::get('/products', [ProductsController::class, 'index'])->name('getProducts');
+        Route::group(['prefix' => 'products', 'namespace' => 'Admin'], function () {
+            Route::get('/create', [ProductsController::class, 'create'])->name('createProduct');
+            Route::post('/', [ProductsController::class, 'store'])->name('storeProduct');
+            Route::get('/update/{id}', [ProductsController::class, 'update'])->name('getUpdateProduct');
+            Route::post('/update/{id}', [ProductsController::class, 'update'])->name('postUpdateProduct');
+            Route::get('/', [ProductsController::class, 'index'])->name('getProducts');
+        });
 
     });
 });

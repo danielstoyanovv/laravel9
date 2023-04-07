@@ -49,6 +49,7 @@ class ProductsController extends Controller
     {
         if ($request->isMethod('post')) {
             $validated = $this->productManager->validateRequestData($request);
+            unset($validated['image']);
             try {
                 DB::beginTransaction();
                 if ($product = $this->productManager->processRequestData($request, ProductFactory::new($validated)->create(), __('Product was created'))) {
@@ -94,7 +95,6 @@ class ProductsController extends Controller
     public function update(Request $request, int $id)
     {
         if ($product = Product::where('id', $id)->first()) {
-
             if ($request->getMethod() == "POST") {
                 $validated = $this->productManager->validateRequestData($request);
                 try {

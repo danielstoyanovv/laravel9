@@ -4,6 +4,7 @@ namespace App\Http\Service;
 
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Database\Factories\FileFactory;
 
 class ProductManager
 {
@@ -34,8 +35,7 @@ class ProductManager
     public function processRequestData(Request $request, Product $product, string $message): Product
     {
         if (!empty($request->image)) {
-            $fileName = time(). '.' . $request->image->extension();
-            $request->image->move(public_path('uploads/images'), $fileName);
+            $this->handleImageRequestData($request, $product);
         }
         $product->description = "";
         if (!empty($request->get('description'))) {
@@ -45,5 +45,24 @@ class ProductManager
         $product->save();
 
         return $product;
+    }
+
+    /**
+     * @param Request $request
+     * @param Product $product
+     * @return \App\Models\File|\Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Eloquent\Model|mixed
+     */
+    private function handleImageRequestData(Request $request, Product $product)
+    {
+        $imageName = time(). '.' . $request->image->extension();
+        $request->image->move(public_path('uploads/images'), $imageName);
+        $file = FileFactory::new([
+            'path' => 'uploads/images/' . $imageName,
+            'product_id' => $product->getAttributes()['id'],
+            'size' => filesize(public_path("uploads/images/") . $imageName),
+            'mime' => mime_content_type(public_path("uploads/images/") . $imageName)
+        ])->create();
+
+        return $file;
     }
 }
