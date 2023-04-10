@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\ContactFormEmail;
@@ -9,7 +10,11 @@ use Illuminate\Support\Facades\Log;
 
 class ContactsController extends Controller
 {
-    public function sendContactEmail(Request $request)
+    /**
+     * @param Request $request
+     * @return RedirectResponse
+     */
+    public function sendContactEmail(Request $request): RedirectResponse
     {
         try {
             if ($request->getMethod() == 'POST') {
@@ -24,6 +29,7 @@ class ContactsController extends Controller
         } catch (\Exception $exception) {
             Log::error($exception->getMessage());
         }
+        return redirect()->route('homepage');
     }
 
      /**
