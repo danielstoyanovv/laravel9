@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\AdminAuthController;
 use App\Http\Controllers\Admin\ProductsController;
+use App\Http\Controllers\ContactsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,7 +18,7 @@ use App\Http\Controllers\Admin\ProductsController;
 
 Route::get('/', function () {
     return view('welcome');
-});
+})->name('homepage');
 
 Route::group(['prefix' => 'admin', 'namespace' => 'Admin'], function () {
     Route::get('/logout', [AdminAuthController::class, 'adminLogout'])->name('adminLogout');
@@ -38,3 +39,6 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin'], function () {
 
     });
 });
+
+Route::post('/sendContactEmail', [ContactsController::class, 'sendContactEmail'])->name('sendContactEmail');
+
