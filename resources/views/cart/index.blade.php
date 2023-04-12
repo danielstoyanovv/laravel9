@@ -44,6 +44,7 @@
                 <label for="payment_method">{{ 'Payment method' }}</label>
                 <select name="payment_method">
                     <option value="paypal">{{ 'Paypal' }}</option>
+                    <option value="stripe">{{ 'Stripe' }}</option>
                 </select>
                 <button type="submit" class="btn btn-success">{{ 'Pay' }}</button>
             </form>

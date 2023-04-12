@@ -8,6 +8,7 @@ use App\Http\Service\Payment\Paypal;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use App\Http\Service\Payment\Stripe;
 
 class CheckoutController extends Controller
 {
@@ -27,6 +28,9 @@ class CheckoutController extends Controller
                     switch ($paymentMethod) {
                         case "paypal":
                             $paymentClassInstance = new Paypal();
+                            break;
+                        case "stripe":
+                            $paymentClassInstance = new Stripe();
                             break;
                     }
 

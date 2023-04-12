@@ -9,6 +9,7 @@ use App\Http\Controllers\Shop\CartController;
 use App\Http\Controllers\Shop\CheckoutController;
 use App\Http\Controllers\Shop\PaypalController;
 use App\Http\Controllers\Admin\OrdersController;
+use App\Http\Controllers\Shop\StripeController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -61,6 +62,13 @@ Route::group(['prefix' => 'shop', 'namespace' => 'Shop'], function () {
         Route::get('/errors', [PaypalController::class, 'error'])->name('paypal_error');
         Route::get('/success', [PaypalController::class, 'success'])->name('paypal_success');
         Route::post('/pay', [PaypalController::class, 'pay'])->name('paypal_pay');
+    });
+
+    Route::group(['prefix' => 'stripe', 'namespace' => 'Shop'], function () {
+        Route::get('/errors', [StripeController::class, 'error'])->name('stripe_error');
+        Route::get('/success', [StripeController::class, 'success'])->name('stripe_success');
+        Route::post('/pay', [StripeController::class, 'pay'])->name('stripe_pay');
+        Route::post('/refund', [StripeController::class, 'refund'])->name('stripe_refund');
     });
 });
 

@@ -21,24 +21,41 @@
             <h5>{{ __('Order items') }}</h5>
 
             <div class="table-responsive">
-                    <table class="table table-borderless table-striped">
+                <table class="table table-borderless table-striped">
+                    <tr>
+                        <th class="table-light">{{ __('Name') }}</th>
+                        <th class="table-light">{{ __('Price') }}</th>
+                        <th class="table-light">{{ __('Qty') }}</th>
+                    </tr>
+                    @foreach ($order->getOrderItem as $item)
                         <tr>
-                            <th class="table-light">{{ __('Name') }}</th>
-                            <th class="table-light">{{ __('Price') }}</th>
-                            <th class="table-light">{{ __('Qty') }}</th>
-
+                            <td class="">{{ $item->product->getAttributes()['name'] }}</td>
+                            <td class="">{{ $item['price'] }}</td>
+                            <td class="">{{ $item['qty'] }}</td>
 
                         </tr>
-                        @foreach ($order->getOrderItem as $item)
-                            <tr>
-                                <td class="">{{ $item->product->getAttributes()['name'] }}</td>
-                                <td class="">{{ $item['price'] }}</td>
-                                <td class="">{{ $item['qty'] }}</td>
+                    @endforeach
+                </table>
+            </div>
+            <div>
+            @if($order['payment_method'] == 'Stripe' and  $order['status']  != 'REFUND' and !is_null($order['payment_data']))
+                <h5>{{ __('Order refund') }}</h5>
+                <form method="post" action="{{ route('stripe_refund') }}">
+                @csrf
+                <input type="hidden" name="paymentNumber" value="{{ $order['payment_data'] }}">
+                {{ __('Amount') }}
 
-                            </tr>
-                        @endforeach
-                    </table>
-                </div>
+                @if($order['status'] == 'PARTLY REFUND')
+                    <input type="text" name="amount" value="{{ $order['total'] - $order['refund_amount'] }}" }}>
+                @else
+                    <input type="text" name="amount" value="{{ $order['total'] }}" }}>
+
+                @endif
+                <input type="submit" value="{{ 'Refund payment' }}">
+                </form>
+            @endif
+            </div>
+
         @endif
     @endif
 @endsection
