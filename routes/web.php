@@ -4,7 +4,11 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\AdminAuthController;
 use App\Http\Controllers\Admin\ProductsController;
 use App\Http\Controllers\ContactsController;
-
+use App\Http\Controllers\Shop\ShopController;
+use App\Http\Controllers\Shop\CartController;
+use App\Http\Controllers\Shop\CheckoutController;
+use App\Http\Controllers\Shop\PaypalController;
+use App\Http\Controllers\Admin\OrdersController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -36,9 +40,31 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin'], function () {
             Route::post('/update/{id}', [ProductsController::class, 'update'])->name('postUpdateProduct');
             Route::get('/', [ProductsController::class, 'index'])->name('getProducts');
         });
+        Route::group(['prefix' => 'orders', 'namespace' => 'Admin'], function () {
+            Route::get('/', [OrdersController::class, 'index'])->name('ordersList');
+            Route::get('/show/{id}', [OrdersController::class, 'show'])->name('showOrder');
+        });
 
     });
 });
 
+Route::group(['prefix' => 'shop', 'namespace' => 'Shop'], function () {
+    Route::get('/', [ShopController::class, 'index'])->name('shop');
+    Route::group(['prefix' => 'cart', ], function () {
+        Route::get('/', [CartController::class, 'index'])->name('cart');
+        Route::post('/addToCart', [CartController::class, 'addToCart'])->name('addToCart');
+        Route::post('/removeFromCart', [CartController::class, 'removeFromCart'])->name('removeFromCart');
+        Route::post('/checkout', [CheckoutController::class, 'index'])->name('checkout');
+        });
+
+    Route::group(['prefix' => 'paypal', 'namespace' => 'Shop'], function () {
+        Route::get('/errors', [PaypalController::class, 'error'])->name('paypal_error');
+        Route::get('/success', [PaypalController::class, 'success'])->name('paypal_success');
+        Route::post('/pay', [PaypalController::class, 'pay'])->name('paypal_pay');
+    });
+});
+
 Route::post('/sendContactEmail', [ContactsController::class, 'sendContactEmail'])->name('sendContactEmail');
+
+
 

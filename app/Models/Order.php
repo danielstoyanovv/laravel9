@@ -4,10 +4,9 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\File;
-use App\Models\CartItem;
+use App\Models\OrderItem;
 
-class Product extends Model
+class Order extends Model
 {
     use HasFactory;
 
@@ -17,21 +16,19 @@ class Product extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        'name',
-        'description',
-        'price'
+        'total',
+        'status',
+        'payment_method',
+        'payment_data',
+        'refund_amount',
+        'invoice_number'
     ];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\MorphOne
      */
-    public function getImages()
+    public function getOrderItem()
     {
-        return $this->hasMany(File::class);
-    }
-
-    public function cartItem()
-    {
-        return $this->hasOne(CartItem::class);
+        return $this->hasMany(OrderItem::class);
     }
 }

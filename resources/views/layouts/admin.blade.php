@@ -44,6 +44,9 @@
                         <a class="nav-link" href="{{ route('createProduct') }}">{{ __('Add product') }}</a>
                     </li>
                     <li class="nav-item">
+                        <a class="nav-link" href="{{ route('ordersList') }}">{{ __('Orders') }}</a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link" href="{{ route('adminLogout') }}">{{ __('Logout') }}</a>
                     </li>
                 </ul>

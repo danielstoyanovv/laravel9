@@ -23,7 +23,7 @@
                 @endforeach
             </table>
         </div>
-        <div class="d-felx justify-content-center">
+        <div class="d-felx justify-content-center pagination">
             {{ $products->links() }}
         </div>
     @endif

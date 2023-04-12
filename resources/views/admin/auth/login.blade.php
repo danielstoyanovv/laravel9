@@ -25,6 +25,12 @@
                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                     </div>
                 @endif
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="{{ route('homepage') }}">{{ __('Home') }}</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">{{ __('Admin Login') }}</li>
+                    </ol>
+                </nav>
                 <div class="card mb-0">
                     <div class="card-body">
                         <h2 class="brand-text text-primary ms-1">Admin Login</h2>

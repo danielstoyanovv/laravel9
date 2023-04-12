@@ -4501,6 +4501,7 @@ textarea.form-control-lg {
     display: flex;
     padding-left: 0;
     list-style: none;
+    height: 100px !important;
 }
 
 .page-link {
@@ -15647,3 +15648,7 @@ Copyright (c) 2014 Daniel Eden
     z-index: 1;
     height: 100%;
     width: 100%; }
+
+.products {
+    margin-top: 120px
+}
