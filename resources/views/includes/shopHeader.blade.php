@@ -18,7 +18,7 @@
             <div class="col-12">
                 <nav class="main-nav">
                     <!-- ***** Logo Start ***** -->
-                    <a href="index.html" class="logo">
+                    <a href={{ route('homepage') }} class="logo">
                         <h4>Spac<span>Dyna</span></h4>
                     </a>
                     <!-- ***** Logo End ***** -->

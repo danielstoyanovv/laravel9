@@ -11,6 +11,7 @@ use App\Http\Controllers\Shop\PaypalController;
 use App\Http\Controllers\Admin\OrdersController;
 use App\Http\Controllers\Shop\StripeController;
 use App\Http\Controllers\Shop\EpayController;
+use App\Http\Controllers\Admin\DashboardController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -32,9 +33,6 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin'], function () {
     Route::post('/login', [AdminAuthController::class, 'postLogin'])->name('adminLoginPost');
 
     Route::group(['middleware' => 'adminauth'], function () {
-        Route::get('/', function () {
-            return view('admin');
-        })->name('adminDashboard');
         Route::group(['prefix' => 'products', 'namespace' => 'Admin'], function () {
             Route::get('/create', [ProductsController::class, 'create'])->name('createProduct');
             Route::post('/', [ProductsController::class, 'store'])->name('storeProduct');
@@ -46,7 +44,7 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin'], function () {
             Route::get('/', [OrdersController::class, 'index'])->name('ordersList');
             Route::get('/show/{id}', [OrdersController::class, 'show'])->name('showOrder');
         });
-
+        Route::get('/dashboard', [DashboardController::class, 'index'])->name('adminDashboard');
     });
 });
 
@@ -83,3 +81,5 @@ Route::post('/sendContactEmail', [ContactsController::class, 'sendContactEmail']
 
 
 
+
+Auth::routes();
