@@ -14,7 +14,7 @@ class StripeManager
      */
     public function createOrder(int $cartId): string
     {
-        $stripe = new StripeClient('sk_test_51MbKefG3ggaQ2SPfczpyzWwktZaWBuCxrDG7VFiA6wsPplY7pl3ed0FgtUveC3PGLzfDRVWCzoreLXHi82s9nbya00lbQGXKMd');
+        $stripe = new StripeClient(config('stripe.stripe_client_code'));
 
         $checkout_session = $stripe->checkout->sessions->create([
             'line_items' => [
@@ -62,7 +62,7 @@ class StripeManager
      */
     public function refund(string $paymentNumber, float $amount)
     {
-        $stripe = new StripeClient('sk_test_51MbKefG3ggaQ2SPfczpyzWwktZaWBuCxrDG7VFiA6wsPplY7pl3ed0FgtUveC3PGLzfDRVWCzoreLXHi82s9nbya00lbQGXKMd');
+        $stripe = new StripeClient(config('stripe.stripe_client_code'));
 
         return $stripe->refunds->create(['payment_intent' => $paymentNumber, 'amount' => $amount * 100]);
     }

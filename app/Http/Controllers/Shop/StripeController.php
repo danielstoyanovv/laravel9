@@ -23,7 +23,7 @@ class StripeController extends Controller
     {
         try {
             if (!empty($_GET['session_id'])) {
-                $stripe = new StripeClient('sk_test_51MbKefG3ggaQ2SPfczpyzWwktZaWBuCxrDG7VFiA6wsPplY7pl3ed0FgtUveC3PGLzfDRVWCzoreLXHi82s9nbya00lbQGXKMd');
+                $stripe = new StripeClient(config('stripe.stripe_client_code'));
 
                 if ($session = $stripe->checkout->sessions->retrieve($_GET['session_id'])) {
                     DB::beginTransaction();

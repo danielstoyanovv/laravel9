@@ -9,12 +9,12 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use App\Http\Service\Payment\Stripe;
+use App\Http\Service\Payment\Epay;
 
 class CheckoutController extends Controller
 {
     /**
      * @param Request $request
-     * @param UrlGeneratorInterface $urlGenerator
      * @return RedirectResponse
      */
     public function index(Request $request): RedirectResponse
@@ -31,6 +31,9 @@ class CheckoutController extends Controller
                             break;
                         case "stripe":
                             $paymentClassInstance = new Stripe();
+                            break;
+                        case "epay":
+                            $paymentClassInstance = new Epay();
                             break;
                     }
 

@@ -9,6 +9,7 @@
                     <th class="table-light">{{ __('id') }}</th>
                     <th class="table-light">{{ __('Total') }}</th>
                     <th class="table-light">{{ __('Status') }}</th>
+                    <th class="table-light">{{ __('Order date') }}</th>
                     <th class="table-light">{{ __('Payment method') }}</th>
                     <th class="table-light">{{ __('Actions') }}</th>
                 </tr>
@@ -17,6 +18,7 @@
                         <td class="">{{ $order['id'] }}</td>
                         <td class="">{{ $order['total'] }}</td>
                         <td class="">{{ $order['status'] }}</td>
+                        <td class="">{{ $order['created_at'] }}</td>
                         <td class="">{{ $order['payment_method'] }}</td>
                         <td class="">
                             <a href="{{ route('showOrder', $order['id']) }}">{{ __('Details') }}</a>

@@ -11,6 +11,15 @@ class Cart extends Model
     use HasFactory;
 
     /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
+     */
+    protected $fillable = [
+        'invoice_number'
+    ];
+
+    /**
      * @return \Illuminate\Database\Eloquent\Relations\MorphOne
      */
     public function getCartItem()

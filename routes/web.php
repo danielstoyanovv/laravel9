@@ -10,6 +10,7 @@ use App\Http\Controllers\Shop\CheckoutController;
 use App\Http\Controllers\Shop\PaypalController;
 use App\Http\Controllers\Admin\OrdersController;
 use App\Http\Controllers\Shop\StripeController;
+use App\Http\Controllers\Shop\EpayController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -69,6 +70,12 @@ Route::group(['prefix' => 'shop', 'namespace' => 'Shop'], function () {
         Route::get('/success', [StripeController::class, 'success'])->name('stripe_success');
         Route::post('/pay', [StripeController::class, 'pay'])->name('stripe_pay');
         Route::post('/refund', [StripeController::class, 'refund'])->name('stripe_refund');
+    });
+
+    Route::group(['prefix' => 'epay', 'namespace' => 'Shop'], function () {
+        Route::get('/errors', [EpayController::class, 'error'])->name('epay_error');
+        Route::get('/success', [EpayController::class, 'success'])->name('epay_success');
+        Route::post('/pay', [EpayController::class, 'pay'])->name('epay_pay');
     });
 });
 
