@@ -21,7 +21,16 @@
                         <td class="">{{ $order['created_at'] }}</td>
                         <td class="">{{ $order['payment_method'] }}</td>
                         <td class="">
-                            <a href="{{ route('showOrder', $order['id']) }}">{{ __('Details') }}</a>
+                            <div class="dropdown">
+                                <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    {{ __('Select') }}
+                                </button>
+                                <ul class="dropdown-menu">
+                                    <li>
+                                        <a class="dropdown-item" href="{{ route('showOrder', $order['id']) }}">{{ __('Details') }}</a>
+                                    </li>
+                                </ul>
+                            </div>
                         </td>
                     </tr>
                 @endforeach

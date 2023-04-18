@@ -5,7 +5,7 @@
         <h3>{{ __('Welcome, Admin') }}</h3>
         <div class="row">
             <div class="col-sm">
-                <h5>{{ __('Last Orders') }}</h5>
+                <h5>{{ __('Last orders') }}</h5>
                 @if ($orders)
                     <div class="table">
                         <table class="table table-borderless table-striped">
@@ -25,8 +25,16 @@
                                     <td class="">{{ $order['created_at'] }}</td>
                                     <td class="">{{ $order['payment_method'] }}</td>
                                     <td class="">
-                                        <a href="{{ route('showOrder', $order['id']) }}">{{ __('Details') }}</a>
-                                    </td>
+                                        <div class="dropdown">
+                                            <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                                {{ __('Select') }}
+                                            </button>
+                                            <ul class="dropdown-menu">
+                                                <li>
+                                                    <a class="dropdown-item" href="{{ route('showOrder', $order['id']) }}">{{ __('Details') }}</a>
+                                                </li>
+                                            </ul>
+                                        </div>                                    </td>
                                 </tr>
                             @endforeach
                         </table>
@@ -36,7 +44,7 @@
             <div class="col-sm">
                 <h5>{{ 'Last products' }}</h5>
                 @if ($products)
-                    <div class="table-responsive">
+                    <div class="table">
                         <table class="table table-borderless table-striped">
                             <tr>
                                 <th class="table-light">{{ __('id') }}</th>
@@ -50,8 +58,16 @@
                                     <td class="">{{ $product['name'] }}</td>
                                     <td class="">{{ $product['price'] }}</td>
                                     <td class="">
-                                        <a href="{{ route('getUpdateProduct', $product['id']) }}">{{ __('Update') }}</a>
-                                    </td>
+                                        <div class="dropdown">
+                                            <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                                {{ __('Select') }}
+                                            </button>
+                                            <ul class="dropdown-menu">
+                                                <li>
+                                                    <a class="dropdown-item" href="{{ route('getUpdateProduct', $product['id']) }}">{{ __('Update') }}</a>
+                                                </li>
+                                            </ul>
+                                        </div>                                    </td>
                                 </tr>
                             @endforeach
                         </table>
