@@ -12,6 +12,8 @@ use App\Http\Controllers\Admin\OrdersController;
 use App\Http\Controllers\Shop\StripeController;
 use App\Http\Controllers\Shop\EpayController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\HomeController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -23,9 +25,7 @@ use App\Http\Controllers\Admin\DashboardController;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-})->name('homepage');
+Route::get('/', [HomeController::class, 'index'])->name('homepage');
 
 Route::group(['prefix' => 'admin', 'namespace' => 'Admin'], function () {
     Route::get('/logout', [AdminAuthController::class, 'adminLogout'])->name('adminLogout');

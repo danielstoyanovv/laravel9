@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\ContactFormEmail;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Cache;
 
 class ContactsController extends Controller
 {
@@ -22,6 +23,7 @@ class ContactsController extends Controller
                 if (!empty($contactEmailParams['name']) && !empty($contactEmailParams['content']) && !empty($contactEmailParams['email'])) {
                     $email = new ContactFormEmail($contactEmailParams['name'], $contactEmailParams['content'], $contactEmailParams['email']);
                     Mail::to('customer.service@test.com')->send($email);
+                    Cache::flush();
                     session()->flash('message', 'Contact message was sent');
                     return redirect()->route('homepage');
                 }

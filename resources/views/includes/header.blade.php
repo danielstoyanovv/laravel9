@@ -29,9 +29,6 @@
                     </a>
                     <!-- ***** Menu End ***** -->
                 </nav>
-                <div class='notifications'>
-                    @include("alerts")
-                </div>
             </div>
         </div>
     </div>
