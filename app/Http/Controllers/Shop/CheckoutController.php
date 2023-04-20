@@ -25,17 +25,11 @@ class CheckoutController extends Controller
                     $paymentMethod = $request->get('payment_method');
                     $paymentTotal = $request->get('payment_total');
 
-                    switch ($paymentMethod) {
-                        case "paypal":
-                            $paymentClassInstance = new Paypal();
-                            break;
-                        case "stripe":
-                            $paymentClassInstance = new Stripe();
-                            break;
-                        case "epay":
-                            $paymentClassInstance = new Epay();
-                            break;
-                    }
+                    match ($paymentMethod) {
+                        "paypal" => $paymentClassInstance = new Paypal(),
+                        "stripe" => $paymentClassInstance = new Stripe(),
+                        "epay" => $paymentClassInstance = new Epay()
+                    };
 
                     if ($paymentClassInstance instanceof PaymentInterface) {
                         $paymentClassInstance->processPayment($paymentTotal);
