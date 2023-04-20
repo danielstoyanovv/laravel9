@@ -35,7 +35,7 @@ class CartManager
      * @param int|null $cartId
      * @return Cart|\Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Eloquent\Model|mixed
      */
-    public function handleCartData(float $cartTotal, int $cartId = null)
+    private function handleCartData(float $cartTotal, int $cartId = null)
     {
         if (!empty($cartId)) {
             if ($cart = Cart::where('id', $cartId)->first()) {
@@ -53,7 +53,7 @@ class CartManager
      * @param float $price
      * @return mixed
      */
-    public function handleCartItemData(Cart $cart, Product $product, int $qty, float $price)
+    private function handleCartItemData(Cart $cart, Product $product, int $qty, float $price)
     {
         foreach ($cart->getCartItem as $item) {
             if ($product->getAttributes()['id'] == $item->product->getAttributes()['id']) {
