@@ -10,12 +10,12 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Stripe\StripeClient;
-use App\Http\Service\StripeManager;
+use App\Http\Service\StripeAdapter;
 use Illuminate\Http\Request;
 
 class StripeController extends Controller
 {
-    public function __construct(private StripeManager $stripeManager, private OrderManager $orderManager)
+    public function __construct(private StripeAdapter $stripeAdapter, private OrderManager $orderManager)
     {
     }
 
@@ -66,7 +66,7 @@ class StripeController extends Controller
     {
         try {
             if ($request->getMethod() == 'POST' && !empty($request->get('price'))) {
-                if ($checkoutLink = $this->stripeManager->createOrder($request->getSession()->get('cart_id'))) {
+                if ($checkoutLink = $this->stripeAdapter->createOrder($request->getSession()->get('cart_id'))) {
                     return redirect($checkoutLink);
                 }
             }
@@ -93,7 +93,7 @@ class StripeController extends Controller
                             return $response;
                         }
 
-                        $refundData = $this->stripeManager->refund($request->get('paymentNumber'), $amount);
+                        $refundData = $this->stripeAdapter->refund($request->get('paymentNumber'), $amount);
                         if (!empty($refundData->status) && $refundData->status ===  'succeeded') {
                             session()->flash('message', __("Payment was refunded"));
 

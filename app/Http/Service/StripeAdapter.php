@@ -5,7 +5,7 @@ namespace App\Http\Service;
 use App\Models\Cart;
 use Stripe\StripeClient;
 
-class StripeManager
+class StripeAdapter
 {
     /**
      * @param int $cartId
