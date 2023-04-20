@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    @include('includes.head')
+    @include('includes.shopHead')
 </head>
 <body>
     @include('includes.shopHeader')
