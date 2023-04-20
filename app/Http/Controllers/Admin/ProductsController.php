@@ -54,7 +54,7 @@ class ProductsController extends Controller
                 DB::beginTransaction();
                 if ($product = $this->productManager->processRequestData($request, ProductFactory::new($validated)->create(), __('Product was created'))) {
                     DB::commit();
-                    return redirect()->action([self::class, 'update'], ['id' => $product->id]);
+                    return redirect()->action([self::class, 'edit'], ['product' => $product->id]);
                 }
             } catch (\Exception $exception) {
                 DB::rollback();
@@ -82,37 +82,33 @@ class ProductsController extends Controller
      */
     public function edit($id)
     {
-        //
+        return view('admin.products.edit', [
+            'product' => Product::find($id)
+        ]);
     }
 
     /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @param int $id
+     * @return \Illuminate\Http\RedirectResponse|void
      */
     public function update(Request $request, int $id)
     {
         if ($product = Product::where('id', $id)->first()) {
-            if ($request->getMethod() == "POST") {
+            if ($request->getMethod() == "PATCH") {
                 $validated = $this->productManager->validateRequestData($request);
                 try {
                     DB::beginTransaction();
                     $product->update($validated);
                     if ($product = $this->productManager->processRequestData($request, $product, __('Product was updated'))) {
                         DB::commit();
-                        return redirect()->action([self::class, 'update'], ['id' => $product->id]);
+                        return redirect()->action([self::class, 'edit'], ['product' => $product->id]);
                     }
                 } catch (\Exception $exception) {
                     DB::rollback();
                     Log::error($exception->getMessage());
                 }
             }
-
-            return view('admin.products.update', [
-                'product' => $product
-            ]);
         }
         throw new NotFoundHttpException();
     }

@@ -23,7 +23,7 @@
                                 </button>
                                 <ul class="dropdown-menu">
                                     <li>
-                                        <a class="dropdown-item" href="{{ route('getUpdateProduct', $product['id']) }}">{{ __('Update') }}</a>
+                                        <a class="dropdown-item" href="{{ route('products.edit', $product['id']) }}">{{ __('Update') }}</a>
                                     </li>
                                 </ul>
                             </div>

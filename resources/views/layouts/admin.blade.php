@@ -39,10 +39,10 @@
                         <a class="nav-link" href="{{ route('adminDashboard') }}">{{ __('Dashboard') }}</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ route('getProducts') }}">{{ __('Products') }}</a>
+                        <a class="nav-link" href="{{ route('products.index') }}">{{ __('Products') }}</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ route('createProduct') }}">{{ __('Add product') }}</a>
+                        <a class="nav-link" href="{{ route('products.create') }}">{{ __('Add product') }}</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('ordersList') }}">{{ __('Orders') }}</a>

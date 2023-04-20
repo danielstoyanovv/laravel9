@@ -31,21 +31,15 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin'], function () {
     Route::get('/logout', [AdminAuthController::class, 'adminLogout'])->name('adminLogout');
     Route::get('/login', [AdminAuthController::class, 'getLogin'])->name('adminLogin');
     Route::post('/login', [AdminAuthController::class, 'postLogin'])->name('adminLoginPost');
+});
 
-    Route::group(['middleware' => 'adminauth'], function () {
-        Route::group(['prefix' => 'products', 'namespace' => 'Admin'], function () {
-            Route::get('/create', [ProductsController::class, 'create'])->name('createProduct');
-            Route::post('/', [ProductsController::class, 'store'])->name('storeProduct');
-            Route::get('/update/{id}', [ProductsController::class, 'update'])->name('getUpdateProduct');
-            Route::post('/update/{id}', [ProductsController::class, 'update'])->name('postUpdateProduct');
-            Route::get('/', [ProductsController::class, 'index'])->name('getProducts');
-        });
-        Route::group(['prefix' => 'orders', 'namespace' => 'Admin'], function () {
-            Route::get('/', [OrdersController::class, 'index'])->name('ordersList');
-            Route::get('/show/{id}', [OrdersController::class, 'show'])->name('showOrder');
-        });
-        Route::get('/dashboard', [DashboardController::class, 'index'])->name('adminDashboard');
+Route::group(['middleware' => 'adminauth'], function () {
+    Route::resource('admin/products', ProductsController::class);
+    Route::group(['prefix' => 'admin/orders', 'namespace' => 'Admin'], function () {
+        Route::get('/', [OrdersController::class, 'index'])->name('ordersList');
+        Route::get('/show/{id}', [OrdersController::class, 'show'])->name('showOrder');
     });
+    Route::get('/admin/dashboard', [DashboardController::class, 'index'])->name('adminDashboard');
 });
 
 Route::group(['prefix' => 'shop', 'namespace' => 'Shop'], function () {
@@ -78,8 +72,5 @@ Route::group(['prefix' => 'shop', 'namespace' => 'Shop'], function () {
 });
 
 Route::post('/sendContactEmail', [ContactsController::class, 'sendContactEmail'])->name('sendContactEmail');
-
-
-
 
 Auth::routes();

@@ -10,7 +10,8 @@
     @endif
 
     <h3>{{ 'Update product' }}</h3>
-    <form method="POST" action="{{ route('postUpdateProduct', ['id' => $product['id']]) }}" enctype="multipart/form-data">
+    <form method="POST" action="{{ route('products.update', $product['id']) }}" enctype="multipart/form-data">
+        @method('PATCH')
         @csrf
         <div class="mb-3 mt-3">
             <input class="form-control" type="text" name="name" placeholder="{{ 'Name' }}" value="{{ $product['name'] }}">

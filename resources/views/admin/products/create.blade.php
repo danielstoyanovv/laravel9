@@ -9,7 +9,7 @@
         </ul>
     @endif
     <h3>{{ 'Create new product' }}</h3>
-    <form method="POST" action="{{ route('storeProduct') }}" enctype="multipart/form-data">
+    <form method="POST" action="{{ route('products.store') }}" enctype="multipart/form-data">
         @csrf
         <div class="mb-3 mt-3">
             <input class="form-control" type="text" name="name" placeholder="{{ 'Name' }}" >
