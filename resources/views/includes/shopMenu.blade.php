@@ -34,5 +34,6 @@
             </div>
         </li>
     @endguest
+    <li><a href="{{ route('adminDashboard') }}">{{ 'Admin' }}</a></li>
     <li class="scroll-to-section"><div class="main-red-button"><a href="#contact">Contact Now</a></div></li>
 </ul>

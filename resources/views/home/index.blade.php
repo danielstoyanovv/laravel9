@@ -137,6 +137,18 @@
             </div>
         </div>
     </div>
+    <div id="shop" class="section our-shop">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6 offset-lg-3">
+                    <div class="section-heading  wow bounceIn" data-wow-duration="1s" data-wow-delay="0.2s">
+                        <h2>See What Our Shop provide</h2>
+                        <a href="{{ route('shop') }}">{{ 'Shop' }}</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <div id="portfolio" class="our-portfolio section">
         <div class="container">
