@@ -44,7 +44,7 @@ class ElasticAddProducts extends Command
                     $params['index'] = 'products';
                     $params['id'] = $product['id'];
                     $params['type']  = 'products_Owner';
-                    if (!$client->exists(['id' => $product['id'], 'index' => 'products'])) {
+                    if ($client->exists(['id' => $product['id'], 'index' => 'products'])->getStatusCode() != '200') {
                         $client->create($params);
                     }
                 }
