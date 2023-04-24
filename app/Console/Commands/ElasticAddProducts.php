@@ -35,14 +35,13 @@ class ElasticAddProducts extends Command
             foreach ($products as $product) {
                 $params = array();
                 $params['body']  = array(
-                    'name' => $product['name'], 											//preparing structred data
+                    'name' => $product['name'],
                     'description' => $product['description'],
                     'price' => $product['price']
-
                 );
                 $params['index'] = 'products';
                 $params['type']  = 'products_Owner';
-                $result = $client->index($params);							//using Index() function to inject the data
+                $result = $client->index($params);
             }
         }
 
