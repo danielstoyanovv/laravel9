@@ -3,8 +3,9 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
+use Elastic\Elasticsearch\ClientBuilder;
 use App\Models\Product;
-use Symfony\Component\HttpClient\CurlHttpClient;
+use Illuminate\Support\Facades\Log;
 
 class ElasticAddProducts extends Command
 {
@@ -20,13 +21,7 @@ class ElasticAddProducts extends Command
      *
      * @var string
      */
-    protected $description = 'Add products in elastic search';
-
-
-    public function __construct(private CurlHttpClient $client)
-    {
-        parent::__construct();
-    }
+    protected $description = 'Add products in Elastic search';
 
     /**
      * Execute the console command.
@@ -35,25 +30,25 @@ class ElasticAddProducts extends Command
      */
     public function handle()
     {
-        if ($products = Product::all()) {
-            foreach ($products as $product) {
-                $this->client->request(
-                    "POST",
-                    config('elasticsearch.url') . "products/" . urlencode($product['name']) .'/' . $product['id'],
-                    [
-                        "headers" => [
-                            "Content-Type" => "application/json"
+        try {
+            if ($products = Product::all()) {
+                $client = ClientBuilder::create()->setHosts(['localhost:9200'])->build();
 
-                        ],
-                        "json" =>
-                            [
-                                'name' => $product['name'],
-                                'description' => $product['description'],
-                                'price' => $product['price']
-                            ]
-                    ]
-                );
+                foreach ($products as $product) {
+                    $params = array();
+                    $params['body']  = array(
+                        'name' => $product['name'],
+                        'description' => $product['description'],
+                        'price' => $product['price']
+                    );
+                    $params['index'] = 'products';
+                    $params['type']  = 'products_Owner';
+                    $client->create($params);
+                }
             }
+        } catch (\Exception $exception) {
+            Log::error($exception->getMessage());
+
         }
 
         return Command::SUCCESS;
