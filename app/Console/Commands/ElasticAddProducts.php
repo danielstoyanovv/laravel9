@@ -35,12 +35,12 @@ class ElasticAddProducts extends Command
                 $client = ClientBuilder::create()->setHosts(['localhost:9200'])->build();
 
                 foreach ($products as $product) {
-                    $params = array();
-                    $params['body']  = array(
+                    $params = [];
+                    $params['body']  = [
                         'name' => $product['name'],
                         'description' => $product['description'],
                         'price' => $product['price']
-                    );
+                    ];
                     $params['index'] = 'products';
                     $params['id'] = $product['id'];
                     $params['type']  = 'products_Owner';
@@ -49,7 +49,6 @@ class ElasticAddProducts extends Command
             }
         } catch (\Exception $exception) {
             Log::error($exception->getMessage());
-
         }
 
         return Command::SUCCESS;

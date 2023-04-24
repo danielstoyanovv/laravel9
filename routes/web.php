@@ -44,6 +44,8 @@ Route::group(['middleware' => 'adminauth'], function () {
 
 Route::group(['prefix' => 'shop', 'namespace' => 'Shop'], function () {
     Route::get('/', [ShopController::class, 'index'])->name('shop');
+    Route::post('/', [ShopController::class, 'index'])->name('search');
+
     Route::group(['prefix' => 'cart', ], function () {
         Route::get('/', [CartController::class, 'index'])->name('cart');
         Route::post('/addToCart', [CartController::class, 'addToCart'])->name('addToCart');

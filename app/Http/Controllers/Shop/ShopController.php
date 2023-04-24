@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Shop;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Elastic\Elasticsearch\ClientBuilder;
+use Illuminate\Support\Facades\Log;
 
 class ShopController extends Controller
 {
@@ -14,8 +16,22 @@ class ShopController extends Controller
      */
     public function index(Request $request)
     {
+        try {
+            $products = Product::paginate(5);
+
+            if ($request->getMethod() == 'POST' && !empty($request->get('product'))) {
+                $client = ClientBuilder::create()->setHosts(['localhost:9200'])->build();
+                $params = [];
+                $params['name'] = $request->get('product');
+                $params['index'] = 'products';
+                $searchResult = $client->search($params);
+            }
+        } catch (\Exception $exception) {
+            Log::error($exception->getMessage());
+        }
+
         return view('shop.index', [
-            "products" => Product::paginate(5)
+            "products" => $products
         ]);
     }
 }

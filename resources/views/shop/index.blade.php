@@ -3,6 +3,15 @@
 @section('content')
    <h3>{{ __('Shop') }}</h3>
     @if ($products)
+        <form method="POST" action="{{ route('search') }}">
+            @csrf
+            <div class="mb-3 mt-3">
+                <input class="form-control" type="text" name="product" placeholder="{{ __('Product name') }}" required="true">
+            </div>
+            <div class="mb-3 mt-3">
+                <input class="btn btn-primary form-control" type="submit" value="{{ __('Search') }}">
+            </div>
+        </form>
         @foreach ($products as $product)
             <div class="w-100 border">
                 <div class="col text-center">
