@@ -42,6 +42,7 @@ class ElasticAddProducts extends Command
                         'price' => $product['price']
                     );
                     $params['index'] = 'products';
+                    $params['id'] = $product['id'];
                     $params['type']  = 'products_Owner';
                     $client->create($params);
                 }
