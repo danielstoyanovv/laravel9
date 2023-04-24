@@ -44,7 +44,9 @@ class ElasticAddProducts extends Command
                     $params['index'] = 'products';
                     $params['id'] = $product['id'];
                     $params['type']  = 'products_Owner';
-                    $client->create($params);
+                    if (!$client->exists($params)) {
+                        $client->create($params);
+                    }
                 }
             }
         } catch (\Exception $exception) {
