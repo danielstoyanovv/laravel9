@@ -36,7 +36,9 @@ class ShopController extends Controller
                             "match" => [
                                 "name" => $request->get('product')
                             ]
-                        ]
+                        ],
+                        "verify_peer" => false,
+                        "verify_host" => false
                     ]
                 );
             }
