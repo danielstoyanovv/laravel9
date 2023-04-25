@@ -23,14 +23,9 @@ class ShopController extends Controller
                 $client = ClientBuilder::create()->setHosts(['localhost:9200'])->build();
                 $response = $client->search([
                     'index' => 'products',
-                    'body'  => [
-                        'query' => [
-                            'multi_match' => [
-                                'query' => $request->get('product'),
-                                'fields' => [
-                                    'name'
-                                ]
-                            ]
+                    'query' => [
+                        'match' => [
+                            'name' => $request->get('product')
                         ]
                     ]
                 ]);
