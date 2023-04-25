@@ -32,7 +32,7 @@ class ShopController extends Controller
                         "headers" => [
                             "Content-Type" => "application/json"
                         ],
-                        'body'  => [
+                        'json'  => [
                             'query' => [
                                 'match' => [
                                     'name' => $request->get('product')
