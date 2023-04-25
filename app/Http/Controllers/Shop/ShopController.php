@@ -21,12 +21,19 @@ class ShopController extends Controller
 
             if ($request->getMethod() == 'POST' && !empty($request->get('product'))) {
                 $client = ClientBuilder::create()->setHosts(['localhost:9200'])->build();
-                $params = [];
-                $params['body']  = [
-                    'name' => $request->get('product')
-                ];
-                $params['index'] = 'products';
-                $searchResult = $client->search($params);
+                $response = $client->search([
+                    'index' => 'products',
+                    'body'  => [
+                        'query' => [
+                            'multi_match' => [
+                                'query' => $request->get('product'),
+                                'fields' => [
+                                    'name'
+                                ]
+                            ]
+                        ]
+                    ]
+                ]);
             }
         } catch (\Exception $exception) {
             Log::error($exception->getMessage());
