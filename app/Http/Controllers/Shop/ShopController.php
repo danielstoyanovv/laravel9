@@ -42,6 +42,10 @@ class ShopController extends Controller
                     ]
                 );
                 $result = json_decode($searchResponseJson->getContent(), true);
+                if (!empty($result['_source'])) {
+                    $products = [];
+                    $products[] = $result['_source'];
+                }
             }
         } catch (\Exception $exception) {
             Log::error($exception->getMessage());
