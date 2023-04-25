@@ -22,7 +22,9 @@ class ShopController extends Controller
             if ($request->getMethod() == 'POST' && !empty($request->get('product'))) {
                 $client = ClientBuilder::create()->setHosts(['localhost:9200'])->build();
                 $params = [];
-                $params['name'] = $request->get('product');
+                $params['body']  = [
+                    'name' => $request->get('product')
+                ];
                 $params['index'] = 'products';
                 $searchResult = $client->search($params);
             }
