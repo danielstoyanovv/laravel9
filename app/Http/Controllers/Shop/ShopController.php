@@ -27,7 +27,7 @@ class ShopController extends Controller
             if ($request->getMethod() == 'POST' && !empty($request->get('product'))) {
                 $searchResponseJson = $this->client->request(
                     "GET",
-                    config('elasticsearch.url') . "products",
+                    config('elasticsearch.url') . "products/_search?pretty",
                     [
                         "headers" => [
                             "Content-Type" => "application/json"
