@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Shop;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Elastic\Elasticsearch\ClientBuilder;
 use Illuminate\Support\Facades\Log;
 use Symfony\Component\HttpClient\CurlHttpClient;
 
@@ -18,12 +17,14 @@ class ShopController extends Controller
     /**
      * @param Request $request
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+     * @throws \Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface
+     * @throws \Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface
+     * @throws \Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface
+     * @throws \Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface
      */
     public function index(Request $request)
     {
         try {
-            $products = Product::paginate(5);
-
             if ($request->getMethod() == 'POST' && !empty($request->get('product'))) {
                 $searchResponseJson = $this->client->request(
                     "GET",
@@ -48,6 +49,10 @@ class ShopController extends Controller
                         $result['hits']['hits'][0]['_source'],
                         ['id' => $result['hits']['hits'][0]['_id']]
                     );
+
+                    return view('shop.search_result', [
+                        "products" => $products
+                    ]);
                 }
             }
         } catch (\Exception $exception) {
@@ -55,7 +60,7 @@ class ShopController extends Controller
         }
 
         return view('shop.index', [
-            "products" => $products
+            "products" => Product::paginate(5)
         ]);
     }
 }
