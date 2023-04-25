@@ -41,6 +41,7 @@ class ShopController extends Controller
                         ]
                     ]
                 );
+                $result = json_decode($searchResponseJson->getContent(), true);
             }
         } catch (\Exception $exception) {
             Log::error($exception->getMessage());
