@@ -7,6 +7,9 @@ namespace App\Providers;
 use App\Services\CartManagerService;
 use App\Interfaces\CartManagerServiceInterface;
 use Illuminate\Support\ServiceProvider;
+use App\Services\OrderManagerService;
+use App\Interfaces\OrderManagerServiceInterface;
+
 
 class ServiceServiceProvider extends ServiceProvider
 {
@@ -26,6 +29,11 @@ class ServiceServiceProvider extends ServiceProvider
         $this->app->bind(
             CartManagerServiceInterface::class,
             CartManagerService::class
+        );
+
+        $this->app->bind(
+            OrderManagerServiceInterface::class,
+            OrderManagerService::class
         );
     }
 }

@@ -1,23 +1,27 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers\Shop;
 
 use App\Checkout\Form;
 use App\Http\Controllers\Controller;
 use App\Models\Cart;
 use App\Models\Order;
-use App\Services\OrderManagerService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\App;
+use App\Interfaces\OrderManagerServiceInterface;
 
 class EpayController extends Controller
 {
     use Form;
+    private $orderManagerService;
+    public function __construct() {
+        $this->orderManagerService = App::make(OrderManagerServiceInterface::class);
 
-    public function __construct(private OrderManagerService $orderManager)
-    {
     }
 
     public function success(Request $request)
@@ -27,7 +31,10 @@ class EpayController extends Controller
 
             session()->flash('message', __('The payment was successful'));
             if ($cart = Cart::find($request->getSession()->get('cart_id'))) {
-                $this->orderManager->create($cart, '', 'Epay', '', $cart->getAttributes()['invoice_number']);
+                $this->orderManagerService
+                    ->setPaymentMethod('Epay')
+                    ->setInvoiceNumber($cart->invoice_number)
+                    ->create($cart);
                 $cart->delete();
             }
 
@@ -49,7 +56,7 @@ class EpayController extends Controller
         try {
             if ($request->getMethod() == 'POST' && !empty($request->get('price'))) {
                 if ($cart = Cart::find($request->getSession()->get('cart_id'))) {
-                    $this->getEpayForm($request->get('price'), $cart);
+                    $this->getEpayForm((float) $request->get('price'), $cart);
                 }
             }
         } catch (\Exception $exception) {
