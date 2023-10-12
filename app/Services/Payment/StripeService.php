@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Http\Service\Payment;
+namespace App\Services\Payment;
 
 use App\Checkout\Form;
+use function route;
 
-class Stripe implements PaymentInterface
+class StripeService implements PaymentServiceInterface
 {
     use Form;
 

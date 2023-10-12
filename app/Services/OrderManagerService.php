@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Http\Service;
+namespace App\Services;
 
-use App\Models\Order;
 use App\Models\Cart;
+use App\Models\Order;
 use Database\Factories\OrderFactory;
 use Database\Factories\OrderItemFactory;
 
-class OrderManager
+class OrderManagerService
 {
     public function create(Cart $cart, string $status, string $paymentMethod, string $paymentData = '', string $invoiceNumber = '')
     {

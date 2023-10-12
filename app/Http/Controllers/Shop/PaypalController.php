@@ -2,18 +2,18 @@
 
 namespace App\Http\Controllers\Shop;
 
+use App\Http\Controllers\Controller;
 use App\Models\Cart;
-use App\Http\Service\PaypalAdapter;
+use App\Services\OrderManagerService;
+use App\Services\PaypalAdapterService;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
-use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use App\Http\Service\OrderManager;
 
 class PaypalController extends Controller
 {
-    public function __construct(private PaypalAdapter $paypal, private OrderManager $orderManager)
+    public function __construct(private PaypalAdapterService $paypal, private OrderManagerService $orderManager)
     {
     }
 

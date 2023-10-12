@@ -3,17 +3,17 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Product;
+use App\Services\ProductManagerService;
 use Database\Factories\ProductFactory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use App\Models\Product;
 use Illuminate\Support\Facades\Log;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use App\Http\Service\ProductManager;
 
 class ProductsController extends Controller
 {
-    public function __construct(private ProductManager $productManager)
+    public function __construct(private ProductManagerService $productManager)
     {
     }
 

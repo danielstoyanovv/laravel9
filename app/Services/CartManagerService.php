@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Http\Service;
+namespace App\Services;
 
+use App\Models\Cart;
 use App\Models\CartItem;
 use App\Models\Product;
-use App\Models\Cart;
 use Database\Factories\CartFactory;
 use Database\Factories\CartItemFactory;
 
-class CartManager
+class CartManagerService
 {
     /**
      * @param int $productId

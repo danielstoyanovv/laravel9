@@ -1,10 +1,12 @@
 <?php
 
-namespace App\Http\Service;
+namespace App\Services;
 
 use Symfony\Component\HttpClient\CurlHttpClient;
+use function config;
+use function route;
 
-class PaypalAdapter
+class PaypalAdapterService
 {
     public function __construct(private CurlHttpClient $client)
     {

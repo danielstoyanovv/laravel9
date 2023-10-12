@@ -2,21 +2,21 @@
 
 namespace App\Http\Controllers\Shop;
 
-use App\Models\Cart;
-use App\Models\Order;
-use Illuminate\Http\RedirectResponse;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
 use App\Checkout\Form;
 use App\Http\Controllers\Controller;
-use App\Http\Service\OrderManager;
+use App\Models\Cart;
+use App\Models\Order;
+use App\Services\OrderManagerService;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class EpayController extends Controller
 {
     use Form;
 
-    public function __construct(private OrderManager $orderManager)
+    public function __construct(private OrderManagerService $orderManager)
     {
     }
 

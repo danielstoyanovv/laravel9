@@ -1,12 +1,14 @@
 <?php
 
-namespace App\Http\Service;
+namespace App\Services;
 
 use App\Models\Product;
-use Illuminate\Http\Request;
 use Database\Factories\FileFactory;
+use Illuminate\Http\Request;
+use function public_path;
+use function session;
 
-class ProductManager
+class ProductManagerService
 {
     /**
      * process validate

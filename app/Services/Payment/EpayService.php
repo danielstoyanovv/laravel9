@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Http\Service\Payment;
+namespace App\Services\Payment;
 
 use App\Checkout\Form;
+use function route;
 
-class Paypal implements PaymentInterface
+class EpayService implements PaymentServiceInterface
 {
     use Form;
 
@@ -14,6 +15,6 @@ class Paypal implements PaymentInterface
      */
     public function processPayment(int $paymentTotal): void
     {
-        $this->getForm($paymentTotal, route('paypal_pay'));
+        $this->getForm($paymentTotal, route('epay_pay'));
     }
 }

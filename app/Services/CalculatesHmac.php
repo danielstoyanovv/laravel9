@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Service;
+namespace App\Services;
 
 trait CalculatesHmac
 {

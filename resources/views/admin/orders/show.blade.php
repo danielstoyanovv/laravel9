@@ -38,7 +38,7 @@
                 </table>
             </div>
             <div>
-            @if($order['payment_method'] == 'Stripe' and  $order['status']  != 'REFUND' and !is_null($order['payment_data']))
+            @if($order['payment_method'] == 'StripeService' and  $order['status']  != 'REFUND' and !is_null($order['payment_data']))
                 <h5>{{ __('Order refund') }}</h5>
                 <form method="post" action="{{ route('stripe_refund') }}">
                 @csrf

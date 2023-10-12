@@ -3,19 +3,19 @@
 namespace App\Http\Controllers\Shop;
 
 use App\Http\Controllers\Controller;
-use App\Http\Service\OrderManager;
 use App\Models\Cart;
 use App\Models\Order;
+use App\Services\OrderManagerService;
+use App\Services\StripeAdapterService;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Stripe\StripeClient;
-use App\Http\Service\StripeAdapter;
-use Illuminate\Http\Request;
 
 class StripeController extends Controller
 {
-    public function __construct(private StripeAdapter $stripeAdapter, private OrderManager $orderManager)
+    public function __construct(private StripeAdapterService $stripeAdapter, private OrderManagerService $orderManager)
     {
     }
 

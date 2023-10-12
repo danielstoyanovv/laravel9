@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers\Shop;
 
-use App\Http\Service\CartManager;
+use App\Http\Controllers\Controller;
+use App\Models\Cart;
 use App\Models\CartItem;
+use App\Services\CartManagerService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
-use App\Models\Cart;
-use App\Http\Controllers\Controller;
 
 class CartController extends Controller
 {
@@ -26,10 +26,10 @@ class CartController extends Controller
 
     /**
      * @param Request $request
-     * @param CartManager $cartManager
+     * @param CartManagerService $cartManager
      * @return RedirectResponse
      */
-    public function addToCart(Request $request, CartManager $cartManager): RedirectResponse
+    public function addToCart(Request $request, CartManagerService $cartManager): RedirectResponse
     {
         try {
             DB::beginTransaction();
@@ -58,10 +58,10 @@ class CartController extends Controller
 
     /**
      * @param Request $request
-     * @param CartManager $cartManager
+     * @param CartManagerService $cartManager
      * @return RedirectResponse
      */
-    public function removeFromCart(Request $request, CartManager $cartManager): RedirectResponse
+    public function removeFromCart(Request $request, CartManagerService $cartManager): RedirectResponse
     {
         try {
             DB::beginTransaction();

@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers\Shop;
 
-use App\Http\Service\Payment\PaymentInterface;
 use App\Http\Controllers\Controller;
-use App\Http\Service\Payment\Paypal;
-use Illuminate\Support\Facades\Log;
+use App\Services\Payment\EpayService;
+use App\Services\Payment\PaymentServiceInterface;
+use App\Services\Payment\PaypalService;
+use App\Services\Payment\StripeService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use App\Http\Service\Payment\Stripe;
-use App\Http\Service\Payment\Epay;
+use Illuminate\Support\Facades\Log;
 
 class CheckoutController extends Controller
 {
@@ -26,12 +26,12 @@ class CheckoutController extends Controller
                     $paymentTotal = $request->get('payment_total');
 
                     match ($paymentMethod) {
-                        "paypal" => $paymentClassInstance = new Paypal(),
-                        "stripe" => $paymentClassInstance = new Stripe(),
-                        "epay" => $paymentClassInstance = new Epay()
+                        "paypal" => $paymentClassInstance = new PaypalService(),
+                        "stripe" => $paymentClassInstance = new StripeService(),
+                        "epay" => $paymentClassInstance = new EpayService()
                     };
 
-                    if ($paymentClassInstance instanceof PaymentInterface) {
+                    if ($paymentClassInstance instanceof PaymentServiceInterface) {
                         $paymentClassInstance->processPayment($paymentTotal);
                     }
                     throw new \Exception(sprintf(

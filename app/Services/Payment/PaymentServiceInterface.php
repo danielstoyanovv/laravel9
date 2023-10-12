@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Http\Service\Payment;
+namespace App\Services\Payment;
 
-interface PaymentInterface
+interface PaymentServiceInterface
 {
     /**
      * @param int $paymentTotal

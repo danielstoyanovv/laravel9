@@ -2,8 +2,8 @@
 
 namespace App\Checkout;
 
-use App\Http\Service\CalculatesHmac;
 use App\Models\Cart;
+use App\Services\CalculatesHmac;
 
 trait Form
 {
