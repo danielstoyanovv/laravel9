@@ -5,14 +5,20 @@ namespace App\Http\Controllers\Shop;
 use App\Http\Controllers\Controller;
 use App\Models\Cart;
 use App\Models\CartItem;
-use App\Services\CartManagerService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\App;
+use App\Interfaces\CartManagerServiceInterface;
 
 class CartController extends Controller
 {
+    private $cartManagerService;
+    public function __construct() {
+        $this->cartManagerService = App::make(CartManagerServiceInterface::class);
+    }
+
     /**
      * @param Request $request
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
@@ -26,10 +32,9 @@ class CartController extends Controller
 
     /**
      * @param Request $request
-     * @param CartManagerService $cartManager
      * @return RedirectResponse
      */
-    public function addToCart(Request $request, CartManagerService $cartManager): RedirectResponse
+    public function addToCart(Request $request): RedirectResponse
     {
         try {
             DB::beginTransaction();
@@ -39,8 +44,10 @@ class CartController extends Controller
                     $productId = $request->get('product');
                     $price = $request->get('price');
                     $qty = $request->get('qty');
-                    $cartTotal = $price * $qty;
-                    if ($cart = $cartManager->addToCart($productId, $cartTotal, $qty, $price, $request->getSession()->get('cart_id'))) {
+                    if ($cart = $this->cartManagerService->setProductId($productId)
+                        ->setQty($qty)
+                        ->setPrice($price)
+                        ->addToCart($request->getSession()->get('cart_id'))) {
                         $request->getSession()->set('cart_id', $cart->getAttributes()['id']);
                     }
 
@@ -58,10 +65,9 @@ class CartController extends Controller
 
     /**
      * @param Request $request
-     * @param CartManagerService $cartManager
      * @return RedirectResponse
      */
-    public function removeFromCart(Request $request, CartManagerService $cartManager): RedirectResponse
+    public function removeFromCart(Request $request): RedirectResponse
     {
         try {
             DB::beginTransaction();
@@ -75,7 +81,7 @@ class CartController extends Controller
                                 $removeCartItem->product->getAttributes()['name']
                             ));
                         }
-                        $cartManager->removeFromCart($removeCartItem);
+                        $this->cartManagerService->removeFromCart($removeCartItem);
                         DB::commit();
                     }
                     session()->flash('message', __('Product was removed from cart'));

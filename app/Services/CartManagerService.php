@@ -1,28 +1,61 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Services;
 
+use App\Interfaces\CartManagerServiceInterface;
 use App\Models\Cart;
 use App\Models\CartItem;
 use App\Models\Product;
 use Database\Factories\CartFactory;
 use Database\Factories\CartItemFactory;
 
-class CartManagerService
+class CartManagerService implements CartManagerServiceInterface
 {
+    public $productId;
+    public $qty;
+    public $price;
+
     /**
      * @param int $productId
-     * @param float $cartTotal
-     * @param int $qty
-     * @param float $price
-     * @param int|null $cartId
-     * @return Cart|false|mixed
+     * @return $this
      */
-    public function addToCart(int $productId, float $cartTotal, int $qty, float $price, int $cartId = null)
+    public function setProductId(int $productId): self
     {
-        if ($product = Product::where('id', $productId)->first()) {
-            $cart = $this->handleCartData($cartTotal, $cartId);
-            $this->handleCartItemData($cart, $product, $qty, $price);
+        $this->productId = $productId;
+        return $this;
+    }
+
+    /**
+     * @param int $qty
+     * @return $this
+     */
+    public function setQty(int $qty): self
+    {
+        $this->qty = $qty;
+        return $this;
+    }
+
+    /**
+     * @param float $price
+     * @return $this
+     */
+    public function setPrice(float $price): self
+    {
+        $this->price = $price;
+        return $this;
+    }
+
+    /**
+     * @param int|null $cartId
+     * @return Cart|false|\Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Eloquent\Model|mixed
+     */
+    public function addToCart(int $cartId = null)
+    {
+        if ($product = Product::find($this->productId)) {
+            $cart = $this->handleCartData($cartId);
+            $this->handleCartItemData($cart, $product);
 
             return $cart;
         }
@@ -31,14 +64,13 @@ class CartManagerService
     }
 
     /**
-     * @param float $cartTotal
      * @param int|null $cartId
      * @return Cart|\Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Eloquent\Model|mixed
      */
-    private function handleCartData(float $cartTotal, int $cartId = null)
+    public function handleCartData(int $cartId = null)
     {
         if (!empty($cartId)) {
-            if ($cart = Cart::where('id', $cartId)->first()) {
+            if ($cart = Cart::find($cartId)) {
                 return $cart;
             }
         }
@@ -53,23 +85,23 @@ class CartManagerService
      * @param float $price
      * @return mixed
      */
-    private function handleCartItemData(Cart $cart, Product $product, int $qty, float $price)
+    public function handleCartItemData(Cart $cart, Product $product)
     {
         foreach ($cart->getCartItem as $item) {
-            if ($product->getAttributes()['id'] == $item->product->getAttributes()['id']) {
-                $currentQty = $item->getAttributes()['qty'];
+            if ($product->id === $item->product->id) {
+                $currentQty = $item->qty;
                 $item->update([
-                    'qty' => $currentQty + $qty
+                    'qty' => $currentQty + $this->qty
                 ]);
                 return $item;
             }
         }
 
         return CartItemFactory::new([
-            'price' => $price,
-            'product_id' => $product->getAttributes()['id'],
-            'qty' => $qty,
-            'cart_id' => $cart->getAttributes()['id']
+            'price' => $this->price,
+            'product_id' => $product->id,
+            'qty' => $this->qty,
+            'cart_id' => $cart->id
         ])->create();
     }
 
