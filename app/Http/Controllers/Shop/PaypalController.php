@@ -1,22 +1,25 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers\Shop;
 
 use App\Http\Controllers\Controller;
+use App\Interfaces\OrderManagerServiceInterface;
 use App\Models\Cart;
-use App\Services\OrderManagerService;
 use App\Services\PaypalAdapterService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
 class PaypalController extends Controller
 {
-    public function __construct(private PaypalAdapterService $paypal, private OrderManagerService $orderManager)
-    {
+    private $orderManagerService;
+    public function __construct(private PaypalAdapterService $paypal) {
+        $this->orderManagerService = App::make(OrderManagerServiceInterface::class);
     }
-
 
     /**
      * @param Request $request
@@ -35,7 +38,10 @@ class PaypalController extends Controller
                 session()->flash('message', __('The payment was successful'));
                 $captureResponse = $this->paypal->capture($request->get('token'), $this->getToken($request));
                 if ($cart = Cart::find($request->getSession()->get('cart_id'))) {
-                    $this->orderManager->create($cart, $captureResponse['status'] ?? '', 'Paypal');
+                    $this->orderManagerService
+                        ->setStatus($captureResponse['status'])
+                        ->setPaymentMethod('Paypal')
+                        ->create($cart);
                     $cart->delete();
                 }
             }
@@ -69,7 +75,7 @@ class PaypalController extends Controller
         try {
             if ($request->getMethod() == 'POST' && !empty($request->get('price'))) {
                 if ($token = $this->getToken($request)) {
-                    $orderResponse = $this->paypal->createOrder($request->get('price'), $token);
+                    $orderResponse = $this->paypal->createOrder((float) $request->get('price'), $token);
                     if (!empty($orderResponse['id'])) {
                         return redirect($this->paypal->getCheckoutNowUrl($orderResponse['id']));
                     }

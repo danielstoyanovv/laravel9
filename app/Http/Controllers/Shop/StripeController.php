@@ -1,25 +1,34 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers\Shop;
 
 use App\Http\Controllers\Controller;
+use App\Interfaces\OrderManagerServiceInterface;
 use App\Models\Cart;
 use App\Models\Order;
-use App\Services\OrderManagerService;
 use App\Services\StripeAdapterService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Stripe\StripeClient;
+use Illuminate\Support\Facades\App;
 
 class StripeController extends Controller
 {
-    public function __construct(private StripeAdapterService $stripeAdapter, private OrderManagerService $orderManager)
-    {
+    private $orderManagerService;
+    public function __construct(private StripeAdapterService $stripeAdapter,) {
+        $this->orderManagerService = App::make(OrderManagerServiceInterface::class);
+
     }
 
-    public function success(Request $request)
+    /**
+     * @param Request $request
+     * @return RedirectResponse
+     */
+    public function success(Request $request): RedirectResponse
     {
         try {
             if (!empty($_GET['session_id'])) {
@@ -29,12 +38,11 @@ class StripeController extends Controller
                     DB::beginTransaction();
                     session()->flash('message', __('The payment was successful'));
                     if ($cart = Cart::find($request->getSession()->get('cart_id'))) {
-                        $this->orderManager->create(
-                            $cart,
-                            strtoupper($session->status) ?? '',
-                            'Stripe',
-                            $session->payment_intent ?? ''
-                        );
+                        $this->orderManagerService
+                            ->setStatus(strtoupper($session->status))
+                            ->setPaymentMethod('Stripe')
+                            ->setPaymentData($session->payment_intent)
+                            ->create($cart);
                         $cart->delete();
                     }
                     DB::commit();
