@@ -6,8 +6,8 @@ namespace App\Http\Controllers\Shop;
 
 use App\Http\Controllers\Controller;
 use App\Interfaces\OrderManagerServiceInterface;
+use App\Interfaces\PaypalAdapterServiceInterface;
 use App\Models\Cart;
-use App\Services\PaypalAdapterService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
@@ -17,8 +17,10 @@ use Illuminate\Support\Facades\Log;
 class PaypalController extends Controller
 {
     private $orderManagerService;
-    public function __construct(private PaypalAdapterService $paypal) {
+    private $paypal;
+    public function __construct() {
         $this->orderManagerService = App::make(OrderManagerServiceInterface::class);
+        $this->paypal = App::make(PaypalAdapterServiceInterface::class);
     }
 
     /**
