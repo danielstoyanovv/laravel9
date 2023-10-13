@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers\Shop;
 
 use App\Http\Controllers\Controller;
@@ -32,7 +34,7 @@ class CheckoutController extends Controller
                     };
 
                     if ($paymentClassInstance instanceof PaymentServiceInterface) {
-                        $paymentClassInstance->processPayment($paymentTotal);
+                        $paymentClassInstance->processPayment((float) $paymentTotal);
                     }
                     throw new \Exception(sprintf(
                         'Class: %s is not a valid payment class',

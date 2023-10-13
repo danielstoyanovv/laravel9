@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers\Shop;
 
 use App\Http\Controllers\Controller;
@@ -44,9 +46,9 @@ class CartController extends Controller
                     $productId = $request->get('product');
                     $price = $request->get('price');
                     $qty = $request->get('qty');
-                    if ($cart = $this->cartManagerService->setProductId($productId)
-                        ->setQty($qty)
-                        ->setPrice($price)
+                    if ($cart = $this->cartManagerService->setProductId((int) $productId)
+                        ->setQty((int) $qty)
+                        ->setPrice((float) $price)
                         ->addToCart($request->getSession()->get('cart_id'))) {
                         $request->getSession()->set('cart_id', $cart->getAttributes()['id']);
                     }

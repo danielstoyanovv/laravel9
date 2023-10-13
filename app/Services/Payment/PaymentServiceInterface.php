@@ -5,8 +5,8 @@ namespace App\Services\Payment;
 interface PaymentServiceInterface
 {
     /**
-     * @param int $paymentTotal
+     * @param float $paymentTotal
      * @return void
      */
-    public function processPayment(int $paymentTotal): void;
+    public function processPayment(float $paymentTotal): void;
 }

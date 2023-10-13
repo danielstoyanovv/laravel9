@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Services\Payment;
 
 use App\Checkout\Form;
@@ -10,10 +12,10 @@ class EpayService implements PaymentServiceInterface
     use Form;
 
     /**
-     * @param int $paymentTotal
+     * @param float $paymentTotal
      * @return void
      */
-    public function processPayment(int $paymentTotal): void
+    public function processPayment(float $paymentTotal): void
     {
         $this->getForm($paymentTotal, route('epay_pay'));
     }
