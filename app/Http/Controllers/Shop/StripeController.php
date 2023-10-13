@@ -6,9 +6,9 @@ namespace App\Http\Controllers\Shop;
 
 use App\Http\Controllers\Controller;
 use App\Interfaces\OrderManagerServiceInterface;
+use App\Interfaces\StripeAdapterServiceInterface;
 use App\Models\Cart;
 use App\Models\Order;
-use App\Services\StripeAdapterService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -19,9 +19,10 @@ use Illuminate\Support\Facades\App;
 class StripeController extends Controller
 {
     private $orderManagerService;
-    public function __construct(private StripeAdapterService $stripeAdapter,) {
+    private $stripeAdapter;
+    public function __construct() {
         $this->orderManagerService = App::make(OrderManagerServiceInterface::class);
-
+        $this->stripeAdapter = App::make(StripeAdapterServiceInterface::class);
     }
 
     /**
@@ -101,11 +102,11 @@ class StripeController extends Controller
                             return $response;
                         }
 
-                        $refundData = $this->stripeAdapter->refund($request->get('paymentNumber'), $amount);
+                        $refundData = $this->stripeAdapter->refund($request->get('paymentNumber'), (float) $amount);
                         if (!empty($refundData->status) && $refundData->status ===  'succeeded') {
                             session()->flash('message', __("Payment was refunded"));
 
-                            $order = $this->handleRefundData($request, $amount, $order);
+                            $order = $this->handleRefundData($request, (float) $amount, $order);
 
                             return redirect($request->headers->get('referer'));
                         }

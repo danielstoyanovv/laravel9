@@ -1,13 +1,16 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Services;
 
+use App\Interfaces\StripeAdapterServiceInterface;
 use App\Models\Cart;
 use Stripe\StripeClient;
 use function config;
 use function route;
 
-class StripeAdapterService
+class StripeAdapterService implements StripeAdapterServiceInterface
 {
     /**
      * @param int $cartId
