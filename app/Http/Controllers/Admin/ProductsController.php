@@ -1,20 +1,25 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\ProductRequest;
+use App\Interfaces\ProductManagerServiceInterface;
 use App\Models\Product;
-use App\Services\ProductManagerService;
 use Database\Factories\ProductFactory;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class ProductsController extends Controller
 {
-    public function __construct(private ProductManagerService $productManager)
+    private $productManager;
+    public function __construct()
     {
+        $this->productManager = App::make(ProductManagerServiceInterface::class);
     }
 
     /**
@@ -40,19 +45,17 @@ class ProductsController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param ProductRequest $request
+     * @return \Illuminate\Http\RedirectResponse|void
      */
-    public function store(Request $request)
+    public function store(ProductRequest $request)
     {
         if ($request->isMethod('post')) {
-            $validated = $this->productManager->validateRequestData($request);
+            $validated = $request->validated();
             unset($validated['image']);
             try {
                 DB::beginTransaction();
-                if ($product = $this->productManager->processRequestData($request, ProductFactory::new($validated)->create(), __('Product was created'))) {
+                if ($product = $this->productManager->processRequestData(ProductFactory::new($validated)->create(), __('Product was created'))) {
                     DB::commit();
                     return redirect()->action([self::class, 'edit'], ['product' => $product->id]);
                 }
@@ -88,29 +91,25 @@ class ProductsController extends Controller
     }
 
     /**
-     * @param Request $request
-     * @param int $id
+     * @param ProductRequest $request
+     * @param Product $product
      * @return \Illuminate\Http\RedirectResponse|void
      */
-    public function update(Request $request, int $id)
+    public function update(ProductRequest $request, Product  $product)
     {
-        if ($product = Product::where('id', $id)->first()) {
-            if ($request->getMethod() == "PATCH") {
-                $validated = $this->productManager->validateRequestData($request);
-                try {
-                    DB::beginTransaction();
-                    $product->update($validated);
-                    if ($product = $this->productManager->processRequestData($request, $product, __('Product was updated'))) {
-                        DB::commit();
-                        return redirect()->action([self::class, 'edit'], ['product' => $product->id]);
-                    }
-                } catch (\Exception $exception) {
-                    DB::rollback();
-                    Log::error($exception->getMessage());
+        if ($request->getMethod() == "PATCH") {
+            try {
+                DB::beginTransaction();
+                $product->update($request->validated());
+                if ($product = $this->productManager->processRequestData($product, __('Product was updated'))) {
+                    DB::commit();
+                    return redirect()->action([self::class, 'edit'], ['product' => $product->id]);
                 }
+            } catch (\Exception $exception) {
+                DB::rollback();
+                Log::error($exception->getMessage());
             }
         }
-        throw new NotFoundHttpException();
     }
 
     /**

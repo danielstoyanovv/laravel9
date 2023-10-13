@@ -13,6 +13,8 @@ use \App\Services\PaypalAdapterService;
 use App\Interfaces\PaypalAdapterServiceInterface;
 use App\Services\StripeAdapterService;
 use App\Interfaces\StripeAdapterServiceInterface;
+use App\Services\ProductManagerService;
+use App\Interfaces\ProductManagerServiceInterface;
 
 class ServiceServiceProvider extends ServiceProvider
 {
@@ -47,6 +49,11 @@ class ServiceServiceProvider extends ServiceProvider
         $this->app->bind(
             StripeAdapterServiceInterface::class,
             StripeAdapterService::class
+        );
+
+        $this->app->bind(
+            ProductManagerServiceInterface::class,
+            ProductManagerService::class
         );
     }
 }
